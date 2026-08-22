@@ -31,6 +31,21 @@ class DayReading {
   final double value;
 }
 
+/// 用药条目（引导流程录入，内存态）。
+class Medication {
+  Medication({required this.name, required this.timesPerDay, required this.pillsEach});
+
+  String name;
+  int timesPerDay;
+  int pillsEach;
+}
+
+/// 血糖测量方式。
+enum GlucoseMethod { cgm, manual }
+
+/// 血糖目标标准。
+enum GlucoseTarget { standard, diabetic, custom }
+
 /// 纯前端内存态 App 状态。无后端、无持久化。
 class AppState extends ChangeNotifier {
   AppState() {
@@ -60,6 +75,93 @@ class AppState extends ChangeNotifier {
 
   /// 今日步数（demo 起始值）。
   int steps = 3260;
+
+  // ---------- 引导流程录入的数据（内存态） ----------
+
+  /// 个人资料。
+  String profileName = '';
+  String profileAge = '';
+  String profileGender = '';
+
+  /// 是否由家人代为设置。
+  bool setupByHelper = false;
+
+  /// 用药列表。
+  final List<Medication> medications = [];
+
+  /// 血压提醒阈值。
+  int bpAlertSystolic = 140;
+  int bpAlertDiastolic = 90;
+
+  /// 血糖设置。
+  GlucoseMethod glucoseMethod = GlucoseMethod.manual;
+  final Set<String> glucoseTimings = {'空腹'};
+  GlucoseTarget glucoseTarget = GlucoseTarget.standard;
+  double glucoseFastingMin = 3.9;
+  double glucoseFastingMax = 6.1;
+  double glucosePostMin = 3.9;
+  double glucosePostMax = 7.8;
+
+  /// 每日步数目标。
+  int stepGoal = 6000;
+
+  /// 权限开关（demo，默认全开）。
+  final Map<String, bool> permissions = {
+    '通知': true,
+    '相机': true,
+    '健康数据': true,
+    '蓝牙': true,
+  };
+
+  /// 问候用称呼：引导填了姓名用姓名，否则默认「王奶奶」。
+  String get displayName =>
+      profileName.isEmpty ? '王奶奶' : profileName;
+
+  void saveProfile({
+    required String name,
+    required String age,
+    required String gender,
+    required bool byHelper,
+  }) {
+    profileName = name;
+    profileAge = age;
+    profileGender = gender;
+    setupByHelper = byHelper;
+    notifyListeners();
+  }
+
+  void addMedication(Medication med) {
+    medications.add(med);
+    notifyListeners();
+  }
+
+  void setBpAlert(int systolic, int diastolic) {
+    bpAlertSystolic = systolic;
+    bpAlertDiastolic = diastolic;
+    notifyListeners();
+  }
+
+  void togglePermission(String key) {
+    permissions[key] = !(permissions[key] ?? false);
+    notifyListeners();
+  }
+
+  void setGlucoseMethod(GlucoseMethod method) {
+    glucoseMethod = method;
+    notifyListeners();
+  }
+
+  void toggleGlucoseTiming(String name) {
+    glucoseTimings.contains(name)
+        ? glucoseTimings.remove(name)
+        : glucoseTimings.add(name);
+    notifyListeners();
+  }
+
+  void setGlucoseTarget(GlucoseTarget target) {
+    glucoseTarget = target;
+    notifyListeners();
+  }
 
   List<CheckInRecord> get records => _records.values.toList();
 

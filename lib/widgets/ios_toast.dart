@@ -72,10 +72,12 @@ class _IosToastState extends State<_IosToast> {
                     color: AppColors.bgCard,
                   ),
                   const SizedBox(width: AppDimens.spaceXs),
-                  Text(
-                    widget.message,
-                    style: textTheme.bodyLarge
-                        ?.copyWith(color: AppColors.bgCard),
+                  Flexible(
+                    child: Text(
+                      widget.message,
+                      style: textTheme.bodyLarge
+                          ?.copyWith(color: AppColors.bgCard),
+                    ),
                   ),
                 ],
               ),

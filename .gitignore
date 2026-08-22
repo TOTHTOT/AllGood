@@ -40,3 +40,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local tooling (contains private tokens)
+.claude/
+.repowise/
+.mcp.json

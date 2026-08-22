@@ -61,7 +61,7 @@ class TodayScreen extends StatelessWidget {
               Text('今天', style: textTheme.displayMedium),
               const SizedBox(height: AppDimens.spaceXs),
               Text(
-                '$_greeting，王奶奶 · $_dateText',
+                '$_greeting，${state.displayName} · $_dateText',
                 style: textTheme.bodyLarge
                     ?.copyWith(color: AppColors.textSecondary),
               ),

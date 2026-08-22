@@ -69,7 +69,7 @@ class CheckInCard extends StatelessWidget {
                   Icon(
                     icon,
                     size: AppDimens.iconLarge,
-                    color: record.done ? AppColors.ok : AppColors.accent,
+                    color: AppColors.accent,
                   ),
                   const SizedBox(width: AppDimens.spaceSm),
                   Expanded(
@@ -107,15 +107,22 @@ class CheckInCard extends StatelessWidget {
   Widget _buildDone(TextTheme textTheme) {
     return Column(
       children: [
-        const Icon(
-          CupertinoIcons.checkmark_circle_fill,
-          size: AppDimens.iconLarge,
-          color: AppColors.ok,
+        Container(
+          width: AppDimens.iconLarge,
+          height: AppDimens.iconLarge,
+          decoration: const BoxDecoration(
+            color: AppColors.accentSoft,
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            CupertinoIcons.checkmark,
+            color: AppColors.accent,
+          ),
         ),
         const SizedBox(height: AppDimens.spaceXs),
         Text(
           '已打卡',
-          style: textTheme.bodyMedium?.copyWith(color: AppColors.ok),
+          style: textTheme.bodyMedium?.copyWith(color: AppColors.accent),
         ),
       ],
     );
