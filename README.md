@@ -1,3 +1,11 @@
+<!--
+ * @Author: TOTHTOT 37585883+TOTHTOT@users.noreply.github.com
+ * @Date: 2026-08-17 22:31:31
+ * @LastEditors: TOTHTOT 37585883+TOTHTOT@users.noreply.github.com
+ * @LastEditTime: 2026-08-24 20:11:02
+ * @FilePath: \AllGood\README.md
+ * @Description: 项目说明文档
+-->
 # All Good
 
 > 每天一次问候，让家人更安心。
@@ -72,6 +80,15 @@ All Good 主要适合：
 - 需要长期记录血压、血糖或用药情况的人群
 - 希望了解父母日常状态的家庭成员
 - 协助老年人进行日常健康管理的照护者
+
+---
+
+## 待实现功能
+
+- [ ] 登录页语言切换
+- [ ] 主题切换
+
+---
 
 ## 技术栈
 
