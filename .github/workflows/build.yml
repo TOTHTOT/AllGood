@@ -1,0 +1,57 @@
+name: Build apps
+
+on:
+  workflow_dispatch: # 手动触发
+  push:
+    tags:
+      - 'v*' # 打 tag（如 v1.0.0）时自动构建
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.1'
+          channel: stable
+
+      - run: flutter pub get
+      - run: flutter analyze
+
+      # 按 CPU 架构分包 + Play 商店用的 AAB
+      - run: flutter build apk --release --split-per-abi
+      - run: flutter build appbundle --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/*-release.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.1'
+          channel: stable
+
+      - run: flutter pub get
+      - run: flutter analyze
+
+      # 未签名 IPA：仅验证 iOS 能编译通过。
+      # 真机安装/上架需配置签名证书（见仓库 secrets: IOS_CERTIFICATE 等）。
+      - run: flutter build ipa --release --no-codesign
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-ipa-unsigned
+          path: build/ios/ipa/*.ipa
