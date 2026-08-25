@@ -4,6 +4,7 @@ library;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../state/app_state.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_dimens.dart';
@@ -38,6 +39,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     final labelStyle = textTheme.headlineMedium?.copyWith(
       color: AppColors.bgCard,
     );
@@ -45,7 +47,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          '提醒值',
+          l.bpCardTitle,
           style: textTheme.titleLarge?.copyWith(color: AppColors.bgCard),
         ),
         const SizedBox(height: AppDimens.spaceXs),
@@ -54,7 +56,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '高于',
+              l.bpCardAbove,
               style: textTheme.bodyLarge?.copyWith(color: AppColors.bgCard),
             ),
             const SizedBox(width: AppDimens.spaceXs),
@@ -69,7 +71,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('高压', style: labelStyle),
+            Text(l.bpCardSystolic, style: labelStyle),
             const SizedBox(width: AppDimens.spaceMd),
             _WhiteInput(controller: _systolic),
           ],
@@ -78,7 +80,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('低压', style: labelStyle),
+            Text(l.bpCardDiastolic, style: labelStyle),
             const SizedBox(width: AppDimens.spaceMd),
             _WhiteInput(controller: _diastolic),
           ],
@@ -93,7 +95,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
                 int.tryParse(_systolic.text) ?? 140,
                 int.tryParse(_diastolic.text) ?? 90,
               );
-              showIosToast(context, '已添加血压提醒');
+              showIosToast(context, l.bpCardAddedToast);
             },
             child: Container(
               constraints: const BoxConstraints(minHeight: AppDimens.touchMin),
@@ -105,7 +107,7 @@ class _BloodPressureCardState extends State<BloodPressureCard> {
               ),
               child: Center(
                 child: Text(
-                  '添加',
+                  l.bpCardAdd,
                   style: textTheme.titleLarge?.copyWith(color: AppColors.slate),
                 ),
               ),

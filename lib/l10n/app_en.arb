@@ -1,0 +1,296 @@
+{
+  "@@locale": "en",
+
+  "languageToggleLabel": "中",
+  "@languageToggleLabel": {
+    "description": "Label on the language toggle button in English mode. Tapping switches to Chinese."
+  },
+
+  "tabToday": "Today",
+  "@tabToday": {},
+  "tabTrends": "Trends",
+  "tabFamily": "Family",
+
+  "todayProgress": "Today's progress",
+  "todayAllDone": "All done for today — well done!",
+  "todayProgressRemaining": "{done} done · {left} to go",
+  "@todayProgressRemaining": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "left": { "type": "int" }
+    }
+  },
+
+  "greetingMorning": "Good morning",
+  "greetingNoon": "Good afternoon",
+  "greetingAfternoon": "Good afternoon",
+  "greetingEvening": "Good evening",
+  "greetingPlaceholder": "Hello",
+  "greeting": "{name}",
+  "@greeting": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "dateLabel": "{weekday}, {month}/{day}",
+  "@dateLabel": {
+    "placeholders": {
+      "month": { "type": "int" },
+      "day": { "type": "int" },
+      "weekday": { "type": "String" }
+    }
+  },
+
+  "recordButton": "Check in",
+  "checkedIn": "Checked in",
+  "abnormalWarning": "This reading is high — keep an eye on it",
+  "toastAlreadyDone": "Already checked in today",
+  "toastRecorded": "Recorded — well done!",
+
+  "checkInMedication": "Medication",
+  "checkInBloodPressure": "Blood pressure",
+  "checkInBloodSugar": "Blood sugar",
+  "checkInDiet": "Diet",
+  "checkInExercise": "Exercise",
+
+  "trendsSubtitle": "Last 7 days",
+  "trendsBpTitle": "Blood pressure (systolic)",
+  "trendsBpRange": "Normal range 90–140 mmHg",
+  "trendsBpSummary": "Mostly steady over the last 7 days; a slight bump on Wednesday, otherwise within range.",
+  "trendsGlucoseTitle": "Blood sugar",
+  "trendsGlucoseRange": "Normal range 3.9–7.8 mmol/L",
+  "trendsGlucoseSummary": "Mostly in range. A post-meal spike on Friday — go easy on sweets.",
+
+  "familyWatching": "Watching: {name} · data shared with consent",
+  "@familyWatching": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "familyReminder": "{name} hasn't checked in by noon — drop her a line",
+  "@familyReminder": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "exportButton": "Export health data",
+  "exportDemoUnavailable": "Demo only — not available",
+  "familyTodayHeading": "Today's status",
+  "statusDone": "Done",
+  "statusPending": "Pending",
+  "familyWeeklyHeading": "Weekly summary",
+  "weeklyAdherence": "Weekly check-in rate 86%",
+  "weeklyBp": "BP mostly steady; a bump on Wednesday",
+  "weeklyGlucose": "Occasional post-meal spikes — watch the sweets",
+
+  "weekdayMon": "Mon",
+  "weekdayTue": "Tue",
+  "weekdayWed": "Wed",
+  "weekdayThu": "Thu",
+  "weekdayFri": "Fri",
+  "weekdaySat": "Sat",
+  "weekdaySun": "Sun",
+
+  "medicationSheetTitle": "Did you take your meds today?",
+  "medicationSheetHint": "Once after breakfast: 1 blood-pressure pill with warm water.",
+  "medicationSummary": "Took 1 after breakfast, on time",
+  "medicationConfirm": "Took it",
+  "medicationDefaultName": "Blood pressure pill",
+
+  "bpSheetTitle": "Take blood pressure",
+  "bpSheetSubmit": "Save reading",
+  "bpSystolicLabel": "Systolic (top)",
+  "bpDiastolicLabel": "Diastolic (bottom)",
+  "bpAbnormalHint": "This isn't your usual reading — tell family if you feel off",
+  "bpSummary": "{sys}/{dia} mmHg",
+  "@bpSummary": {
+    "placeholders": {
+      "sys": { "type": "int" },
+      "dia": { "type": "int" }
+    }
+  },
+
+  "sugarSheetTitle": "Check blood sugar",
+  "sugarMealQuestion": "Which meal was this around?",
+  "sugarValueLabel": "Reading",
+  "sugarAbnormalHint": "A bit high — go easy on the sweets",
+  "sugarMealFasting": "Fasting",
+  "sugarMealAfterBreakfast": "After breakfast",
+  "sugarMealAfterLunch": "After lunch",
+  "sugarMealAfterDinner": "After dinner",
+  "sugarSummary": "{meal} {value} mmol/L",
+  "@sugarSummary": {
+    "placeholders": {
+      "meal": { "type": "String" },
+      "value": { "type": "String" }
+    }
+  },
+
+  "dietSheetTitle": "What did you eat today?",
+  "dietSheetSubmit": "Save meal",
+  "dietPhotoAdded": "Photo added",
+  "dietTakePhoto": "Take a photo",
+  "dietSugarQuestion": "How sweet was it?",
+  "dietSugarLow": "Low sugar",
+  "dietSugarMedium": "Medium",
+  "dietSugarHigh": "High sugar",
+  "dietSummary": "Lunch · {level}",
+  "@dietSummary": {
+    "placeholders": { "level": { "type": "String" } }
+  },
+
+  "exerciseSheetTitle": "Get moving today",
+  "exerciseSheetSubmit": "Sync steps",
+  "exerciseAlreadyWalked": "You've walked",
+  "exerciseStepsUnit": "steps",
+  "exerciseHint": "Tap below to sync steps from your phone",
+
+  "entryGreeting": "How are you today?",
+  "entryCta": "I'm good!",
+  "loginNoAccount": "I have no account",
+  "loginCta": "Log in",
+  "loginDemoOnly": "Demo only — please sign up",
+  "registerTitle": "Sign up",
+  "registerHelper": "Have someone help me",
+  "registerSelf": "Set it up myself",
+  "qrTitle": "Have someone help me",
+  "qrScannedCta": "Family scanned it — continue",
+  "qrCaption1": "Scan and help to set it up",
+  "qrCaption2": "Ask a family member to scan and help finish setup",
+  "infoFormTitleHelper": "Help set it up",
+  "infoFormTitleSelf": "Set it up myself",
+  "infoNameHint": "Name",
+  "infoAgeHint": "Age",
+  "infoGenderFemale": "Female",
+  "infoGenderMale": "Male",
+  "continueButton": "Continue",
+  "saveButton": "Save",
+
+  "medicationStatusTitle": "Medications",
+  "medicationNone": "I do not take any",
+  "medicationNeed": "I take medication",
+  "medicationTapToAdd": "Tap to add",
+  "medicationPhotoUnavailable": "Photo recognition unavailable — use + to add",
+  "medicationCardSummary": "{name} · {times} times/day · {pills} pills each",
+  "@medicationCardSummary": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "times": { "type": "int" },
+      "pills": { "type": "int" }
+    }
+  },
+  "medicationDetailTitle": "Medication details",
+  "medicationNameHint": "Tap to enter name",
+  "medicationTimesLabel": "Times per day",
+  "medicationPillsLabel": "Pills each time",
+  "medicationTimesUnit": "x",
+  "medicationPillsUnit": "pills",
+
+  "checkInMedicationStatus": "8:00, 1 dose after breakfast",
+  "checkInMedicationSummary": "Took 1 after breakfast, on time",
+  "checkInBloodPressureStatus": "Take your blood pressure once in the morning",
+  "checkInBloodSugarStatus": "Check your blood sugar after a meal",
+  "checkInDietStatus": "Snap a photo of today's meals",
+  "checkInExerciseStatus": "Take a short walk and stretch",
+
+  "recordWantsTitle": "What I want to track",
+  "recordWantsBp": "Blood pressure",
+  "recordWantsSugar": "Blood sugar",
+  "recordWantsExercise": "Exercise",
+  "recordWantsBreadcrumbBluetooth": "Bluetooth pairing",
+  "recordWantsBreadcrumbSugar": "Blood sugar",
+  "recordWantsBreadcrumbSugarTiming": "Blood sugar / When",
+
+  "bpCardTitle": "Alert thresholds",
+  "bpCardAbove": "Above",
+  "bpCardSystolic": "Systolic",
+  "bpCardDiastolic": "Diastolic",
+  "bpCardAdd": "Add",
+  "bpCardAddedToast": "BP alert added",
+
+  "exerciseGoalTitle": "Daily step goal",
+  "exerciseGoalSteps": "{n} steps",
+  "@exerciseGoalSteps": {
+    "placeholders": { "n": { "type": "int" } }
+  },
+  "exerciseGoalAdd": "Add",
+  "exerciseGoalSaved": "Exercise goal saved",
+
+  "sugarStepMethod": "Blood sugar",
+  "sugarStepMethodHint": "How do you usually check?",
+  "sugarMethodCgm": "Continuous monitor (CGM)",
+  "sugarMethodCgmSub": "Worn on the arm, automatic",
+  "sugarMethodManual": "Manual reading",
+  "sugarMethodManualSub": "Finger-prick or entered by hand",
+  "sugarBluetoothTitle": "Bluetooth",
+  "sugarBluetoothHint": "Turn on your meter's Bluetooth, then tap the ring",
+  "sugarBluetoothUnavailable": "Bluetooth pairing coming soon",
+  "sugarTimingTitle": "When to measure",
+  "sugarTimingHint": "Pick any that apply",
+  "sugarTimingNext": "Next",
+  "sugarTimingNameFasting": "Fasting",
+  "sugarTimingNameAfterBreakfast": "After breakfast",
+  "sugarTimingNameAfterLunch": "After lunch",
+  "sugarTimingNameAfterDinner": "After dinner",
+  "sugarTimingNameBedtime": "Bedtime",
+  "sugarTimingNoteFasting": "Before eating in the morning",
+  "sugarTimingNoteAfterBreakfast": "2 hours after breakfast",
+  "sugarTimingNoteAfterLunch": "2 hours after lunch",
+  "sugarTimingNoteAfterDinner": "2 hours after dinner",
+  "sugarTimingNoteBedtime": "Before sleep",
+  "sugarTimingTime1": "07:00",
+  "sugarTimingTime2": "09:00",
+  "sugarTimingTime3": "14:00",
+  "sugarTimingTime4": "20:00",
+  "sugarTimingTime5": "21:30",
+
+  "sugarTargetTitle": "Blood sugar targets",
+  "sugarTargetHint": "Defaults are fine — just tap Next",
+  "sugarTargetStandard": "Standard",
+  "sugarTargetStandardValue": "Fasting < 6.1   Post-meal < 7.8",
+  "sugarTargetStandardNote": "For higher readings, not diagnosed",
+  "sugarTargetDiabetic": "Diabetic standard",
+  "sugarTargetDiabeticValue": "Fasting < 7.0   Post-meal < 10.0",
+  "sugarTargetDiabeticNote": "Common control targets if diagnosed",
+  "sugarTargetCustom": "Custom",
+  "sugarTargetCustomNote": "Set per your doctor's advice",
+  "sugarTargetSavedToast": "Sugar targets saved",
+
+  "sugarCustomTitle": "Custom targets",
+  "sugarCustomHint": "Set per your doctor's advice",
+  "sugarCustomFasting": "Fasting",
+  "sugarCustomFastingNote": "Before eating in the morning",
+  "sugarCustomPost": "Post-meal",
+  "sugarCustomPostNote": "2 hours after a meal",
+  "sugarCustomMinLabel": "Min",
+  "sugarCustomMaxLabel": "Max",
+  "sugarCustomSave": "Save settings",
+  "sugarCustomSavedToast": "Sugar targets saved",
+
+  "dietIntroTitle": "Track meals",
+  "dietIntroBody": "Snap a photo of each meal — helps you and family see the link between food and blood sugar.",
+  "dietIntroCta": "Get started",
+
+  "permissionsTitle": "A few permissions needed",
+  "permissionsSubtitle": "Turn these on so we can support you fully",
+  "permissionsAllCta": "Allow all and continue",
+  "permissionsFootnote": "You can change these anytime in Settings",
+  "permissionsNameNotifications": "Notifications",
+  "permissionsNoteNotifications": "Reminders for meds and BP",
+  "permissionsNameCamera": "Camera",
+  "permissionsNoteCamera": "Photo logging of meals",
+  "permissionsNameHealth": "Health data",
+  "permissionsNoteHealth": "Read step count automatically",
+  "permissionsNameBluetooth": "Bluetooth",
+  "permissionsNoteBluetooth": "Connect to your meter",
+
+  "setupCompleteTitle": "You're all set!",
+  "setupCompleteCta": "Start using",
+  "setupRemindersHeading": "Today's reminders",
+  "setupReminderMed": "Take 1 {medName} (alarm set)",
+  "@setupReminderMed": {
+    "placeholders": { "medName": { "type": "String" } }
+  },
+  "setupReminderBp": "Measure BP (rest first)",
+  "setupReminderLunch": "Snap your lunch",
+  "setupReminderSteps": "Goal today: {goal} steps",
+  "@setupReminderSteps": {
+    "placeholders": { "goal": { "type": "int" } }
+  },
+  "setupReminderAllDay": "All day"
+}

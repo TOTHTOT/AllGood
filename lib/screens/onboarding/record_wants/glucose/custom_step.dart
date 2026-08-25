@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../state/app_state.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_dimens.dart';
@@ -43,6 +44,7 @@ class _GlucoseCustomStepState extends State<GlucoseCustomStep> {
   }
 
   void _save() {
+    final l = AppLocalizations.of(context);
     final s = widget.state;
     s.glucoseFastingMin =
         double.tryParse(_controllers[0].text) ?? s.glucoseFastingMin;
@@ -52,28 +54,33 @@ class _GlucoseCustomStepState extends State<GlucoseCustomStep> {
         double.tryParse(_controllers[2].text) ?? s.glucosePostMin;
     s.glucosePostMax =
         double.tryParse(_controllers[3].text) ?? s.glucosePostMax;
-    showIosToast(context, '已保存血糖目标');
+    showIosToast(context, l.sugarCustomSavedToast);
     widget.onStep('target');
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const StepHeader('自定义目标', '根据医生建议设置您的目标范围'),
+        StepHeader(l.sugarCustomTitle, l.sugarCustomHint),
         const SizedBox(height: AppDimens.spaceSm),
         _CustomGroup(
-          label: '空腹',
-          note: '早起未进食时的血糖值',
+          label: l.sugarCustomFasting,
+          note: l.sugarCustomFastingNote,
+          minLabel: l.sugarCustomMinLabel,
+          maxLabel: l.sugarCustomMaxLabel,
           minController: _controllers[0],
           maxController: _controllers[1],
         ),
         const SizedBox(height: AppDimens.spaceSm),
         _CustomGroup(
-          label: '餐后血糖',
-          note: '进餐后 2 小时的血糖值',
+          label: l.sugarCustomPost,
+          note: l.sugarCustomPostNote,
+          minLabel: l.sugarCustomMinLabel,
+          maxLabel: l.sugarCustomMaxLabel,
           minController: _controllers[2],
           maxController: _controllers[3],
         ),
@@ -90,7 +97,7 @@ class _GlucoseCustomStepState extends State<GlucoseCustomStep> {
             ),
             child: Center(
               child: Text(
-                '保存设置',
+                l.sugarCustomSave,
                 style: textTheme.titleLarge?.copyWith(color: AppColors.bgCard),
               ),
             ),
@@ -106,12 +113,16 @@ class _CustomGroup extends StatelessWidget {
   const _CustomGroup({
     required this.label,
     required this.note,
+    required this.minLabel,
+    required this.maxLabel,
     required this.minController,
     required this.maxController,
   });
 
   final String label;
   final String note;
+  final String minLabel;
+  final String maxLabel;
   final TextEditingController minController;
   final TextEditingController maxController;
 
@@ -151,11 +162,11 @@ class _CustomGroup extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _CustomInput(label: '最低', controller: minController),
+                child: _CustomInput(label: minLabel, controller: minController),
               ),
               const SizedBox(width: AppDimens.spaceSm),
               Expanded(
-                child: _CustomInput(label: '最高', controller: maxController),
+                child: _CustomInput(label: maxLabel, controller: maxController),
               ),
             ],
           ),

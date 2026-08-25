@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import '../theme/app_dimens.dart';
 import '../widgets/trend_chart.dart';
 
 /// Tab 2「趋势」：家属视角，最近 7 天血压 / 血糖图表（demo 数据）。
 class TrendsScreen extends StatelessWidget {
-  const TrendsScreen({super.key});
+  const TrendsScreen({super.key, required this.state});
+
+  final AppState state;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return SafeArea(
       child: ListView(
         padding: const EdgeInsets.all(AppDimens.pagePadding),
         children: [
-          Text('趋势', style: textTheme.displayMedium),
+          Text(l.tabTrends, style: textTheme.displayMedium),
           const SizedBox(height: AppDimens.spaceXs),
-          Text('最近 7 天', style: textTheme.bodyMedium),
+          Text(l.trendsSubtitle, style: textTheme.bodyMedium),
           const SizedBox(height: AppDimens.spaceMd),
           _TrendCard(
-            title: '血压（高压）',
-            rangeText: '正常范围 90–140 mmHg',
-            summary: '最近 7 天血压大体平稳，周三略偏高，其余都在正常范围。',
+            title: l.trendsBpTitle,
+            rangeText: l.trendsBpRange,
+            summary: l.trendsBpSummary,
             chart: const TrendBarChart(
               data: AppState.systolicWeek,
               normalMin: AppState.systolicMin,
@@ -33,9 +37,9 @@ class TrendsScreen extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.cardGap),
           _TrendCard(
-            title: '血糖',
-            rangeText: '正常范围 3.9–7.8 mmol/L',
-            summary: '血糖大多正常，周五餐后偏高，甜食要少吃一点。',
+            title: l.trendsGlucoseTitle,
+            rangeText: l.trendsGlucoseRange,
+            summary: l.trendsGlucoseSummary,
             chart: const TrendBarChart(
               data: AppState.glucoseWeek,
               normalMin: AppState.glucoseMin,

@@ -4,6 +4,7 @@ library;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../state/app_state.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_dimens.dart';
@@ -19,14 +20,15 @@ class GlucoseMethodStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const StepHeader('血糖测量', '您平时怎么测血糖？'),
+        StepHeader(l.sugarStepMethod, l.sugarStepMethodHint),
         const SizedBox(height: AppDimens.spaceSm),
         _RadioCard(
-          title: '实时血糖仪（CGM）',
-          subtitle: '佩戴在手臂上，自动记录',
+          title: l.sugarMethodCgm,
+          subtitle: l.sugarMethodCgmSub,
           selected: state.glucoseMethod == GlucoseMethod.cgm,
           onTap: () {
             state.setGlucoseMethod(GlucoseMethod.cgm);
@@ -34,8 +36,8 @@ class GlucoseMethodStep extends StatelessWidget {
           },
         ),
         _RadioCard(
-          title: '手动测量',
-          subtitle: '扎手指或手动记录数值',
+          title: l.sugarMethodManual,
+          subtitle: l.sugarMethodManualSub,
           selected: state.glucoseMethod == GlucoseMethod.manual,
           onTap: () {
             state.setGlucoseMethod(GlucoseMethod.manual);

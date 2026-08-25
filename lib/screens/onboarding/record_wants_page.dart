@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../state/app_state.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_dimens.dart';
@@ -23,9 +24,15 @@ class RecordWantsPage extends StatefulWidget {
   State<RecordWantsPage> createState() => _RecordWantsPageState();
 }
 
+/// 内部稳定的卡片 key（不随语言变化）。所有 CardStack 的 children /
+/// colors / breadcrumbs / backActions / scrollKeys 都用这个枚举，
+/// 只有显示给用户看的 title 走本地化。
+enum _CardKey { bloodPressure, bloodSugar, exercise }
+
 class _RecordWantsPageState extends State<RecordWantsPage> {
-  // 默认展开第一张卡（血压）；任何时候总保持一张卡展开，不出现空堆叠。
-  String _expanded = '血压';
+  /// 当前展开的卡片。切换语言不会影响这个状态，因为本地化只在 build 里
+  /// 把 `_CardKey` 翻译成对应语言的标题字符串。
+  _CardKey _expanded = _CardKey.bloodPressure;
 
   /// 血糖卡内嵌向导的当前步骤下标（步骤流见 _glucoseFlow）。
   int _glucoseStep = 0;
@@ -43,7 +50,7 @@ class _RecordWantsPageState extends State<RecordWantsPage> {
       _glucoseFlow[_glucoseStep.clamp(0, _glucoseFlow.length - 1)];
 
   /// 点击卡片标题切换展开；点已展开的卡不收起（避免整页空白）。
-  void _toggle(String key) => setState(() {
+  void _toggle(_CardKey key) => setState(() {
     if (_expanded != key) _expanded = key;
   });
 
@@ -56,21 +63,31 @@ class _RecordWantsPageState extends State<RecordWantsPage> {
   });
 
   /// 面包屑小字（Figma 标题栏：蓝牙帧为「蓝牙配对」，目标帧为已完成步骤）。
-  String? get _glucoseBreadcrumb => switch (_glucoseStepName) {
-    'bluetooth' => '蓝牙配对',
-    'timing' => '血糖测量',
-    'target' => '血糖测量/测量时段',
-    _ => null,
-  };
+  String? get _glucoseBreadcrumb {
+    final l = AppLocalizations.of(context);
+    return switch (_glucoseStepName) {
+      'bluetooth' => l.recordWantsBreadcrumbBluetooth,
+      'timing' => l.recordWantsBreadcrumbSugar,
+      'target' => l.recordWantsBreadcrumbSugarTiming,
+      _ => null,
+    };
+  }
+
+  String _titleFor(_CardKey k, AppLocalizations l) => switch (k) {
+        _CardKey.bloodPressure => l.recordWantsBp,
+        _CardKey.bloodSugar => l.recordWantsSugar,
+        _CardKey.exercise => l.recordWantsExercise,
+      };
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     // 堆叠参数：收起高 88，每张卡向上叠 24（露出圆角，形成"一摞卡"观感）。
     const collapsedH = 88.0;
     const overlap = 24.0;
-    // Figma 原稿卡片通栏（x=0 满宽、延伸出下边缘），只有标题行保留页面边距；
-    // scroll: false + Expanded 让堆叠区自动填满标题以下的全部空间。
+    final sugar = _CardKey.bloodSugar;
+
     return OnboardingScaffold(
       title: null,
       scroll: false,
@@ -86,7 +103,7 @@ class _RecordWantsPageState extends State<RecordWantsPage> {
             child: Row(
               children: [
                 Text(
-                  '我想要记录',
+                  l.recordWantsTitle,
                   style: textTheme.displayMedium?.copyWith(
                     color: AppColors.slate,
                   ),
@@ -115,27 +132,31 @@ class _RecordWantsPageState extends State<RecordWantsPage> {
           Expanded(
             child: CardStack(
               expanded: _expanded,
+              titles: {
+                for (final k in _CardKey.values) k: _titleFor(k, l),
+              },
               collapsedHeight: collapsedH,
               overlap: overlap,
               onToggle: _toggle,
               children: {
-                '血压': BloodPressureCard(state: widget.state),
-                '血糖': GlucoseWizard(
+                _CardKey.bloodPressure: BloodPressureCard(state: widget.state),
+                _CardKey.bloodSugar: GlucoseWizard(
                   state: widget.state,
                   step: _glucoseStepName,
                   onStep: _glucoseGo,
                 ),
-                '运动信息': ExerciseCard(state: widget.state),
+                _CardKey.exercise: ExerciseCard(state: widget.state),
               },
               // 收起时的各自底色（展开时统一变浅蓝，血糖为面板蓝，见 _CardStack）。
-              colors: const {
-                '血压': AppColors.slate,
-                '血糖': AppColors.blueMid,
-                '运动信息': AppColors.slate,
+              colors: {
+                _CardKey.bloodPressure: AppColors.slate,
+                _CardKey.bloodSugar: AppColors.blueMid,
+                _CardKey.exercise: AppColors.slate,
               },
-              breadcrumbs: {'血糖': _glucoseBreadcrumb},
-              backActions: {if (_expanded == '血糖') '血糖': _glucoseBack},
-              scrollKeys: {'血糖': _glucoseStepName},
+              sugarKey: sugar,
+              breadcrumbs: {sugar: _glucoseBreadcrumb},
+              backActions: {if (_expanded == sugar) sugar: _glucoseBack},
+              scrollKeys: {sugar: _glucoseStepName},
             ),
           ),
         ],

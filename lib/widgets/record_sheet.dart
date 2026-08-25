@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_dimens.dart';
@@ -99,11 +100,12 @@ class _MedicationForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return _SheetScaffold(
-      title: '今天吃药了吗？',
-      buttonLabel: '已吃药',
+      title: l.medicationSheetTitle,
+      buttonLabel: l.medicationConfirm,
       onSubmit: () {
-        state.complete(CheckInType.medication, '早餐后 1 次，已按时吃药');
+        state.complete(CheckInType.medication, l.medicationSummary);
         Navigator.of(context).pop(true);
       },
       content: Column(
@@ -116,7 +118,7 @@ class _MedicationForm extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.spaceMd),
           Text(
-            '早餐后 1 次：降压药 1 片，温水送服。',
+            l.medicationSheetHint,
             style: textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
@@ -148,13 +150,14 @@ class _BloodPressureFormState extends State<_BloodPressureForm> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return _SheetScaffold(
-      title: '量血压',
-      buttonLabel: '完成记录',
+      title: l.bpSheetTitle,
+      buttonLabel: l.bpSheetSubmit,
       onSubmit: () {
         widget.state.complete(
           CheckInType.bloodPressure,
-          '$_systolic/$_diastolic mmHg',
+          l.bpSummary(_systolic, _diastolic),
           abnormal: _abnormal,
         );
         Navigator.of(context).pop(true);
@@ -162,7 +165,7 @@ class _BloodPressureFormState extends State<_BloodPressureForm> {
       content: Column(
         children: [
           NumberStepper(
-            label: '高压（收缩压）',
+            label: l.bpSystolicLabel,
             valueText: '$_systolic',
             unit: 'mmHg',
             onDecrease: () => setState(() {
@@ -174,7 +177,7 @@ class _BloodPressureFormState extends State<_BloodPressureForm> {
           ),
           const SizedBox(height: AppDimens.spaceMd),
           NumberStepper(
-            label: '低压（舒张压）',
+            label: l.bpDiastolicLabel,
             valueText: '$_diastolic',
             unit: 'mmHg',
             onDecrease: () => setState(() {
@@ -193,7 +196,7 @@ class _BloodPressureFormState extends State<_BloodPressureForm> {
                 const SizedBox(width: AppDimens.spaceXs),
                 Expanded(
                   child: Text(
-                    '这个数值和平常不太一样，身体不舒服就告诉家人',
+                    l.bpAbnormalHint,
                     style: textTheme.bodyMedium
                         ?.copyWith(color: AppColors.textPrimary),
                   ),
@@ -219,23 +222,38 @@ class _BloodSugarForm extends StatefulWidget {
 }
 
 class _BloodSugarFormState extends State<_BloodSugarForm> {
-  static const List<String> _meals = ['空腹', '早餐后', '午餐后', '晚餐后'];
-
-  String _meal = _meals[1];
+  late List<String> _meals;
+  late String _meal;
   double _value = 5.6;
 
   bool get _abnormal => AppState.isGlucoseAbnormal(_value);
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final l = AppLocalizations.of(context);
+    // Snapshot localized options when the locale changes; we still default
+    // the selection to "after breakfast" / index 1.
+    _meals = [
+      l.sugarMealFasting,
+      l.sugarMealAfterBreakfast,
+      l.sugarMealAfterLunch,
+      l.sugarMealAfterDinner,
+    ];
+    _meal = _meals.length > 1 ? _meals[1] : _meals.first;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return _SheetScaffold(
-      title: '测血糖',
-      buttonLabel: '完成记录',
+      title: l.sugarSheetTitle,
+      buttonLabel: l.bpSheetSubmit,
       onSubmit: () {
         widget.state.complete(
           CheckInType.bloodSugar,
-          '$_meal ${_value.toStringAsFixed(1)} mmol/L',
+          l.sugarSummary(_meal, _value.toStringAsFixed(1)),
           abnormal: _abnormal,
         );
         Navigator.of(context).pop(true);
@@ -243,7 +261,7 @@ class _BloodSugarFormState extends State<_BloodSugarForm> {
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('这是哪一餐前后测的？', style: textTheme.titleMedium),
+          Text(l.sugarMealQuestion, style: textTheme.titleMedium),
           const SizedBox(height: AppDimens.spaceSm),
           Wrap(
             spacing: AppDimens.spaceXs,
@@ -259,7 +277,7 @@ class _BloodSugarFormState extends State<_BloodSugarForm> {
           ),
           const SizedBox(height: AppDimens.spaceMd),
           NumberStepper(
-            label: '血糖值',
+            label: l.sugarValueLabel,
             valueText: _value.toStringAsFixed(1),
             unit: 'mmol/L',
             onDecrease: () => setState(() {
@@ -272,7 +290,7 @@ class _BloodSugarFormState extends State<_BloodSugarForm> {
           if (_abnormal) ...[
             const SizedBox(height: AppDimens.spaceMd),
             Text(
-              '这次血糖有点高，甜食要少吃一点哦',
+              l.sugarAbnormalHint,
               style: textTheme.bodyMedium
                   ?.copyWith(color: AppColors.textPrimary),
             ),
@@ -338,19 +356,31 @@ class _DietForm extends StatefulWidget {
 }
 
 class _DietFormState extends State<_DietForm> {
-  static const List<String> _sugarLevels = ['低糖', '中糖', '高糖'];
-
+  late List<String> _sugarLevels;
+  late String _sugar;
   bool _photoAdded = false;
-  String _sugar = _sugarLevels[0];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final l = AppLocalizations.of(context);
+    _sugarLevels = [
+      l.dietSugarLow,
+      l.dietSugarMedium,
+      l.dietSugarHigh,
+    ];
+    _sugar = _sugarLevels.first;
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return _SheetScaffold(
-      title: '今天吃了什么？',
-      buttonLabel: '完成记录',
+      title: l.dietSheetTitle,
+      buttonLabel: l.dietSheetSubmit,
       onSubmit: () {
-        widget.state.complete(CheckInType.diet, '午餐 · $_sugar');
+        widget.state.complete(CheckInType.diet, l.dietSummary(_sugar));
         Navigator.of(context).pop(true);
       },
       content: Column(
@@ -373,17 +403,17 @@ class _DietFormState extends State<_DietForm> {
                       const Icon(CupertinoIcons.checkmark_circle_fill,
                           color: AppColors.ok),
                       const SizedBox(width: AppDimens.spaceXs),
-                      Text('已添加照片', style: textTheme.titleMedium),
+                      Text(l.dietPhotoAdded, style: textTheme.titleMedium),
                     ],
                   ),
                 )
               : AppleTintedButton(
-                  label: '拍张照片',
+                  label: l.dietTakePhoto,
                   icon: CupertinoIcons.camera_fill,
                   onPressed: () => setState(() => _photoAdded = true),
                 ),
           const SizedBox(height: AppDimens.spaceMd),
-          Text('这餐甜不甜？', style: textTheme.titleMedium),
+          Text(l.dietSugarQuestion, style: textTheme.titleMedium),
           const SizedBox(height: AppDimens.spaceSm),
           Row(
             children: [
@@ -416,9 +446,10 @@ class _ExerciseForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return _SheetScaffold(
-      title: '今天动一动',
-      buttonLabel: '同步步数',
+      title: l.exerciseSheetTitle,
+      buttonLabel: l.exerciseSheetSubmit,
       onSubmit: () {
         state.syncSteps();
         Navigator.of(context).pop(true);
@@ -426,16 +457,16 @@ class _ExerciseForm extends StatelessWidget {
       content: Column(
         children: [
           const SizedBox(height: AppDimens.spaceMd),
-          Text('今天已经走了', style: textTheme.bodyLarge),
+          Text(l.exerciseAlreadyWalked, style: textTheme.bodyLarge),
           const SizedBox(height: AppDimens.spaceXs),
           Text(
             '${state.steps}',
             style: textTheme.displayLarge,
           ),
-          Text('步', style: textTheme.bodySmall),
+          Text(l.exerciseStepsUnit, style: textTheme.bodySmall),
           const SizedBox(height: AppDimens.spaceMd),
           Text(
-            '点下面按钮，把手机上的步数同步过来',
+            l.exerciseHint,
             style: textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),

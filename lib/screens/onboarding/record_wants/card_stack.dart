@@ -11,35 +11,48 @@ import '../../../widgets/apple_button.dart';
 /// 堆叠式卡片列表：卡片之间负间距叠放（下层卡压住上层卡底边），
 /// 收起时只露标题条；点击后卡片滑上去盖住上方内容、自身撑开，
 /// 位置与高度均带 350ms 动画，其余卡保持标题可见。
-class CardStack extends StatelessWidget {
+///
+/// `K` 是稳定的卡片 key（不随语言变化），`titles` 把 key 映射成给用户看的
+/// 本地化标题。
+class CardStack<K> extends StatelessWidget {
   const CardStack({
     super.key,
     required this.expanded,
+    required this.titles,
     required this.collapsedHeight,
     required this.overlap,
     required this.onToggle,
     required this.children,
     required this.colors,
+    this.sugarKey,
     this.breadcrumbs = const {},
     this.backActions = const {},
     this.scrollKeys = const {},
   });
 
-  final String expanded;
+  /// 当前展开的卡片 key。
+  final K expanded;
+
+  /// key → 显示给用户的标题（通常是本地化字符串）。
+  final Map<K, String> titles;
+
   final double collapsedHeight;
   final double overlap;
-  final ValueChanged<String> onToggle;
-  final Map<String, Widget> children;
-  final Map<String, Color> colors;
+  final ValueChanged<K> onToggle;
+  final Map<K, Widget> children;
+  final Map<K, Color> colors;
+
+  /// 血糖卡的 key（用于展开时切换浅蓝/面板蓝底色）。
+  final K? sugarKey;
 
   /// 标题栏内卡片名右侧的面包屑小字（血糖向导用）。
-  final Map<String, String?> breadcrumbs;
+  final Map<K, String?> breadcrumbs;
 
   /// 标题栏右侧圆圈返回箭头的点击行为（血糖向导用）。
-  final Map<String, VoidCallback> backActions;
+  final Map<K, VoidCallback> backActions;
 
   /// 卡内容滚动区的 key：值变化时重建滚动区、滚动位置归零（向导切步用）。
-  final Map<String, Object?> scrollKeys;
+  final Map<K, Object?> scrollKeys;
 
   static const _duration = Duration(milliseconds: 350);
   static const _curve = Curves.easeOutCubic;
@@ -74,11 +87,11 @@ class CardStack extends StatelessWidget {
                 left: 0,
                 right: 0,
                 height: heights[i],
-                child: _SwitchCard(
-                  title: keys[i],
+                child: _SwitchCard<K>(
+                  title: titles[keys[i]] ?? '',
                   // Figma 45:237/44:199：展开后变浅蓝；血糖面板用 #8FBFEB。
                   color: expanded == keys[i]
-                      ? (keys[i] == '血糖'
+                      ? (keys[i] == sugarKey
                             ? AppColors.blueSheet
                             : AppColors.blueLight)
                       : colors[keys[i]]!,
@@ -98,7 +111,7 @@ class CardStack extends StatelessWidget {
   }
 }
 
-class _SwitchCard extends StatelessWidget {
+class _SwitchCard<K> extends StatelessWidget {
   const _SwitchCard({
     required this.title,
     required this.color,

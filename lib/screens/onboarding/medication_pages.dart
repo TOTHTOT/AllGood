@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../state/app_state.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_dimens.dart';
@@ -18,14 +19,15 @@ class MedicationStatusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return OnboardingScaffold(
-      title: '用药状况',
+      title: l.medicationStatusTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.spaceLg * 2),
           SlateOutlineButton(
-            label: '我没有用药',
+            label: l.medicationNone,
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (_) => RecordWantsPage(state: state),
@@ -34,7 +36,7 @@ class MedicationStatusPage extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.spaceMd),
           SlateOutlineButton(
-            label: '我需要用药',
+            label: l.medicationNeed,
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (_) => MedicationAddPage(state: state),
@@ -63,10 +65,11 @@ class MedicationAddPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return OnboardingScaffold(
-      title: '用药状况',
+      title: l.medicationStatusTitle,
       bottom: WarmCtaButton(
-        label: '继续',
+        label: l.continueButton,
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) => RecordWantsPage(state: state),
@@ -90,7 +93,7 @@ class MedicationAddPage extends StatelessWidget {
               Pressable(
                 onTap: () => showIosToast(
                   context,
-                  '拍照识别暂未开放，请用 + 添加',
+                  l.medicationPhotoUnavailable,
                 ),
                 child: Container(
                   height: 192,
@@ -112,7 +115,7 @@ class MedicationAddPage extends StatelessWidget {
                       ),
                       const SizedBox(width: AppDimens.spaceLg),
                       Text(
-                        '点击添加',
+                        l.medicationTapToAdd,
                         style: textTheme.headlineMedium
                             ?.copyWith(color: AppColors.bgPage),
                       ),
@@ -161,6 +164,7 @@ class _MedicationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(AppDimens.spaceSm),
       decoration: const BoxDecoration(
@@ -174,7 +178,7 @@ class _MedicationCard extends StatelessWidget {
           const SizedBox(width: AppDimens.spaceSm),
           Expanded(
             child: Text(
-              '${med.name} · 一日 ${med.timesPerDay} 次 · 一次 ${med.pillsEach} 粒',
+              l.medicationCardSummary(med.name, med.timesPerDay, med.pillsEach),
               style: textTheme.bodyLarge,
             ),
           ),
@@ -206,10 +210,11 @@ class _MedicationDetailPageState extends State<MedicationDetailPage> {
   }
 
   void _save() {
+    final l = AppLocalizations.of(context);
     widget.state.addMedication(
       Medication(
         name: _nameController.text.trim().isEmpty
-            ? '降压药'
+            ? l.medicationDefaultName
             : _nameController.text.trim(),
         timesPerDay: _timesPerDay,
         pillsEach: _pillsEach,
@@ -221,10 +226,11 @@ class _MedicationDetailPageState extends State<MedicationDetailPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return OnboardingScaffold(
-      title: '用药详情',
+      title: l.medicationDetailTitle,
       bottom: WarmCtaButton(
-        label: '保存',
+        label: l.saveButton,
         color: AppColors.accent,
         onTap: _save,
       ),
@@ -257,7 +263,7 @@ class _MedicationDetailPageState extends State<MedicationDetailPage> {
                         style: textTheme.titleMedium
                             ?.copyWith(color: AppColors.textPrimary),
                         decoration: InputDecoration(
-                          hintText: '点击输入药名',
+                          hintText: l.medicationNameHint,
                           hintStyle: textTheme.titleMedium
                               ?.copyWith(color: AppColors.textTertiary),
                           border: InputBorder.none,
@@ -270,9 +276,9 @@ class _MedicationDetailPageState extends State<MedicationDetailPage> {
                 const Divider(),
                 const SizedBox(height: AppDimens.spaceSm),
                 NumberStepper(
-                  label: '一日几次',
+                  label: l.medicationTimesLabel,
                   valueText: '$_timesPerDay',
-                  unit: '次',
+                  unit: l.medicationTimesUnit,
                   onDecrease: () => setState(() {
                     if (_timesPerDay > 1) _timesPerDay--;
                   }),
@@ -282,9 +288,9 @@ class _MedicationDetailPageState extends State<MedicationDetailPage> {
                 ),
                 const SizedBox(height: AppDimens.spaceSm),
                 NumberStepper(
-                  label: '一次几粒',
+                  label: l.medicationPillsLabel,
                   valueText: '$_pillsEach',
-                  unit: '粒',
+                  unit: l.medicationPillsUnit,
                   onDecrease: () => setState(() {
                     if (_pillsEach > 1) _pillsEach--;
                   }),

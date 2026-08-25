@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../state/app_state.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_dimens.dart';
@@ -20,7 +21,24 @@ class InfoFormPage extends StatefulWidget {
 class _InfoFormPageState extends State<InfoFormPage> {
   final _nameController = TextEditingController();
   final _ageController = TextEditingController();
-  String _gender = '女';
+  late List<String> _genders;
+  late String _gender;
+
+  @override
+  void initState() {
+    super.initState();
+    // 默认选项的初值在 didChangeDependencies 里跟随 locale 重算。
+    _genders = const [];
+    _gender = '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final l = AppLocalizations.of(context);
+    _genders = [l.infoGenderFemale, l.infoGenderMale];
+    if (!_genders.contains(_gender)) _gender = _genders.first;
+  }
 
   @override
   void dispose() {
@@ -45,25 +63,27 @@ class _InfoFormPageState extends State<InfoFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return OnboardingScaffold(
-      title: widget.byHelper ? '帮他人设置' : '自己设置',
-      bottom: WarmCtaButton(label: '继续', onTap: _next),
+      title: widget.byHelper ? l.infoFormTitleHelper : l.infoFormTitleSelf,
+      bottom: WarmCtaButton(label: l.continueButton, onTap: _next),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: AppDimens.spaceLg),
           _OutlineField(
             controller: _nameController,
-            hint: '姓名',
+            hint: l.infoNameHint,
           ),
           const SizedBox(height: AppDimens.spaceSm),
           _OutlineField(
             controller: _ageController,
-            hint: '年龄',
+            hint: l.infoAgeHint,
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: AppDimens.spaceSm),
           _GenderPicker(
+            options: _genders,
             value: _gender,
             onChanged: (value) => setState(() => _gender = value),
           ),
@@ -114,25 +134,31 @@ class _OutlineField extends StatelessWidget {
 
 /// 性别选择：两个大号选项（适老，避免小键盘）。
 class _GenderPicker extends StatelessWidget {
-  const _GenderPicker({required this.value, required this.onChanged});
+  const _GenderPicker({
+    required this.options,
+    required this.value,
+    required this.onChanged,
+  });
 
+  final List<String> options;
   final String value;
   final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    if (options.isEmpty) return const SizedBox.shrink();
     return Row(
       children: [
-        for (final gender in ['女', '男']) ...[
+        for (var i = 0; i < options.length; i++) ...[
           Expanded(
             child: GestureDetector(
-              onTap: () => onChanged(gender),
+              onTap: () => onChanged(options[i]),
               child: Container(
                 constraints:
                     const BoxConstraints(minHeight: AppDimens.buttonHeight),
                 decoration: BoxDecoration(
-                  color: gender == value
+                  color: options[i] == value
                       ? AppColors.accentSoft
                       : AppColors.bgCard,
                   border: Border.all(color: AppColors.outlineBlue, width: 2),
@@ -142,9 +168,9 @@ class _GenderPicker extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    gender,
+                    options[i],
                     style: textTheme.titleMedium?.copyWith(
-                      color: gender == value
+                      color: options[i] == value
                           ? AppColors.accent
                           : AppColors.slate,
                     ),
@@ -153,7 +179,7 @@ class _GenderPicker extends StatelessWidget {
               ),
             ),
           ),
-          if (gender != '男') const SizedBox(width: AppDimens.spaceSm),
+          if (i != options.length - 1) const SizedBox(width: AppDimens.spaceSm),
         ],
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_dimens.dart';
@@ -25,6 +26,7 @@ class CheckInCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Pressable(
@@ -54,7 +56,7 @@ class CheckInCard extends StatelessWidget {
                     const SizedBox(width: AppDimens.spaceXs),
                     Expanded(
                       child: Text(
-                        '这次数值有点高，留意一下',
+                        l.abnormalWarning,
                         style: textTheme.bodyMedium
                             ?.copyWith(color: AppColors.danger),
                       ),
@@ -79,7 +81,7 @@ class CheckInCard extends StatelessWidget {
                         Text(title, style: textTheme.titleLarge),
                         const SizedBox(height: AppDimens.spaceXs),
                         Text(
-                          record.done ? record.summary : record.statusText,
+                          _subtitle(l),
                           style: record.done
                               ? textTheme.bodyMedium
                               : textTheme.bodyLarge,
@@ -89,9 +91,9 @@ class CheckInCard extends StatelessWidget {
                   ),
                   const SizedBox(width: AppDimens.spaceSm),
                   record.done
-                      ? _buildDone(textTheme)
+                      ? _buildDone(textTheme, l)
                       : AppleButton(
-                          label: '打卡',
+                          label: l.recordButton,
                           compact: true,
                           onPressed: onTap,
                         ),
@@ -104,7 +106,38 @@ class CheckInCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDone(TextTheme textTheme) {
+  /// 未打卡 → 占位文案（按当前语言解析）；已打卡 → 用户填的实际摘要，
+  /// 若为空则用本地化的"默认完成文案"兜底。
+  String _subtitle(AppLocalizations l) {
+    if (!record.done) {
+      switch (record.type) {
+        case CheckInType.medication:
+          return l.checkInMedicationStatus;
+        case CheckInType.bloodPressure:
+          return l.checkInBloodPressureStatus;
+        case CheckInType.bloodSugar:
+          return l.checkInBloodSugarStatus;
+        case CheckInType.diet:
+          return l.checkInDietStatus;
+        case CheckInType.exercise:
+          return l.checkInExerciseStatus;
+      }
+    }
+    if (record.userSummary.isNotEmpty) return record.userSummary;
+    // 已完成但没填具体数值时，按类型给出兜底文案。
+    switch (record.type) {
+      case CheckInType.medication:
+        return l.checkInMedicationSummary;
+      case CheckInType.bloodPressure:
+      case CheckInType.bloodSugar:
+      case CheckInType.exercise:
+        return '';
+      case CheckInType.diet:
+        return l.dietSummary(l.dietSugarLow);
+    }
+  }
+
+  Widget _buildDone(TextTheme textTheme, AppLocalizations l) {
     return Column(
       children: [
         Container(
@@ -121,7 +154,7 @@ class CheckInCard extends StatelessWidget {
         ),
         const SizedBox(height: AppDimens.spaceXs),
         Text(
-          '已打卡',
+          l.checkedIn,
           style: textTheme.bodyMedium?.copyWith(color: AppColors.accent),
         ),
       ],

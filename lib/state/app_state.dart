@@ -1,23 +1,26 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+
+import '../l10n/app_localizations.dart';
 
 /// 五个每日打卡项。
 enum CheckInType { medication, bloodPressure, bloodSugar, diet, exercise }
 
 /// 单次打卡记录（demo：仅内存态，当天有效）。
+/// 用户填的数值摘要存到 [userSummary]；界面上未填时的占位文案
+/// （如"早餐后 1 次"）由 `AppLocalizations` 在 widget 端解析。
 class CheckInRecord {
-  CheckInRecord({required this.type, required this.statusText});
+  CheckInRecord({required this.type});
 
   final CheckInType type;
 
-  /// 未完成时显示的状态说明，如「8:00 早餐后 1 次」。
-  final String statusText;
-
   bool done = false;
 
-  /// 完成后的记录摘要，如「120/78 mmHg」。
-  String summary = '';
+  /// 用户填的实际数值摘要，例如「120/78 mmHg」、「Breakfast · Low sugar」。
+  /// 为空时，widget 用 AppLocalizations 里的占位文案兜底显示。
+  String userSummary = '';
 
   /// 记录数值是否超出正常范围（卡片顶部显示 danger 细条 + 文字说明）。
   bool abnormal = false;
@@ -50,25 +53,35 @@ enum GlucoseTarget { standard, diabetic, custom }
 class AppState extends ChangeNotifier {
   AppState() {
     // demo：初始已完成 2 项（用药、饮食），方便首页展示 2/5 进度。
-    _records[CheckInType.medication]!
-      ..done = true
-      ..summary = '早餐后 1 次，已按时吃药';
-    _records[CheckInType.diet]!
-      ..done = true
-      ..summary = '午餐 · 低糖';
+    // 占位文案由 widget 从 AppLocalizations 解析，state 不持有本地化字符串。
+    _records[CheckInType.medication]!.done = true;
+    _records[CheckInType.diet]!.done = true;
+  }
+
+  /// Current UI locale. Defaults to the first entry of
+  /// `AppLocalizations.supportedLocales` (English in this build); toggle
+  /// cycles through the supported list.
+  Locale locale = const Locale('en');
+
+  /// Advance to the next supported locale, then notify so the UI rebuilds.
+  /// Adding a new language to `AppLocalizations.supportedLocales` is
+  /// automatically picked up here — no need to edit this method.
+  void toggleLocale() {
+    final supported = AppLocalizations.supportedLocales;
+    final idx = supported.indexWhere(
+      (l) => l.languageCode == locale.languageCode,
+    );
+    final next = supported[(idx + 1) % supported.length];
+    locale = next;
+    notifyListeners();
   }
 
   final Map<CheckInType, CheckInRecord> _records = {
-    CheckInType.medication:
-        CheckInRecord(type: CheckInType.medication, statusText: '8:00 早餐后 1 次'),
-    CheckInType.bloodPressure:
-        CheckInRecord(type: CheckInType.bloodPressure, statusText: '早上量一次血压'),
-    CheckInType.bloodSugar:
-        CheckInRecord(type: CheckInType.bloodSugar, statusText: '餐后测一次血糖'),
-    CheckInType.diet:
-        CheckInRecord(type: CheckInType.diet, statusText: '拍一拍今天吃的饭'),
-    CheckInType.exercise:
-        CheckInRecord(type: CheckInType.exercise, statusText: '散散步，活动一下'),
+    CheckInType.medication: CheckInRecord(type: CheckInType.medication),
+    CheckInType.bloodPressure: CheckInRecord(type: CheckInType.bloodPressure),
+    CheckInType.bloodSugar: CheckInRecord(type: CheckInType.bloodSugar),
+    CheckInType.diet: CheckInRecord(type: CheckInType.diet),
+    CheckInType.exercise: CheckInRecord(type: CheckInType.exercise),
   };
 
   final Random _random = Random();
@@ -176,7 +189,7 @@ class AppState extends ChangeNotifier {
     final record = _records[type]!;
     record
       ..done = true
-      ..summary = summary
+      ..userSummary = summary
       ..abnormal = abnormal;
     notifyListeners();
   }

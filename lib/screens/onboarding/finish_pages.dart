@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../state/app_state.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_dimens.dart';
@@ -17,8 +18,9 @@ class DietIntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return OnboardingScaffold(
-      title: '饮食记录',
+      title: l.dietIntroTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -35,20 +37,20 @@ class DietIntroPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '饮食记录',
+                  l.dietIntroTitle,
                   style: textTheme.displayMedium
                       ?.copyWith(color: AppColors.bgCard),
                 ),
                 const SizedBox(height: AppDimens.spaceMd),
                 Text(
-                  '每天拍照记录三餐，帮您和家人了解饮食与血糖的关系。',
+                  l.dietIntroBody,
                   style: textTheme.bodyLarge
                       ?.copyWith(color: AppColors.bgCard),
                 ),
                 const SizedBox(height: AppDimens.spaceLg),
                 Center(
                   child: WarmCtaButton(
-                    label: '记录',
+                    label: l.dietIntroCta,
                     color: AppColors.accent,
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute<void>(
@@ -73,23 +75,39 @@ class PermissionsPage extends StatelessWidget {
 
   final AppState state;
 
-  static const List<(String, String, IconData)> _items = [
-    ('通知', '到时提醒您吃药、量血压', CupertinoIcons.bell_fill),
-    ('相机', '拍照记录饮食', CupertinoIcons.camera_fill),
-    ('健康数据', '自动读取步数', CupertinoIcons.heart_fill),
-    ('蓝牙', '连接血糖仪', CupertinoIcons.bluetooth),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
+    final items = <(String, String, IconData)>[
+      (
+        l.permissionsNameNotifications,
+        l.permissionsNoteNotifications,
+        CupertinoIcons.bell_fill,
+      ),
+      (
+        l.permissionsNameCamera,
+        l.permissionsNoteCamera,
+        CupertinoIcons.camera_fill,
+      ),
+      (
+        l.permissionsNameHealth,
+        l.permissionsNoteHealth,
+        CupertinoIcons.heart_fill,
+      ),
+      (
+        l.permissionsNameBluetooth,
+        l.permissionsNoteBluetooth,
+        CupertinoIcons.bluetooth,
+      ),
+    ];
     return OnboardingScaffold(
-      title: '需要您允许几项权限',
-      subtitle: '开启后，才能为您提供完整的健康管理服务',
+      title: l.permissionsTitle,
+      subtitle: l.permissionsSubtitle,
       bottom: Column(
         children: [
           WarmCtaButton(
-            label: '全部允许并继续',
+            label: l.permissionsAllCta,
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (_) => SetupCompletePage(state: state),
@@ -98,7 +116,7 @@ class PermissionsPage extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.spaceXs),
           Center(
-            child: Text('之后也可在「设置」中随时更改',
+            child: Text(l.permissionsFootnote,
                 style: textTheme.bodyMedium),
           ),
         ],
@@ -107,7 +125,7 @@ class PermissionsPage extends StatelessWidget {
         listenable: state,
         builder: (context, _) => Column(
           children: [
-            for (final (name, note, icon) in _items)
+            for (final (name, note, icon) in items)
               _PermissionRow(
                 name: name,
                 note: note,
@@ -211,20 +229,23 @@ class SetupCompletePage extends StatelessWidget {
 
   final AppState state;
 
-  static const List<(String, String)> _reminders = [
-    ('08:00', '吃 XX 药 1 片（已设响铃）'),
-    ('08:30', '测量血压（建议静止后测）'),
-    ('12:00', '午餐拍照记录'),
-    ('全天', '今日目标 6000 步'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
+    final medName = state.medications.isEmpty
+        ? l.medicationDefaultName
+        : state.medications.first.name;
+    final reminders = <(String, String)>[
+      ('08:00', l.setupReminderMed(medName)),
+      ('08:30', l.setupReminderBp),
+      ('12:00', l.setupReminderLunch),
+      (l.setupReminderAllDay, l.setupReminderSteps(state.stepGoal)),
+    ];
     return OnboardingScaffold(
       showBack: false,
       bottom: WarmCtaButton(
-        label: '开始使用',
+        label: l.setupCompleteCta,
         color: AppColors.accent,
         onTap: () => Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute<void>(
@@ -254,11 +275,11 @@ class SetupCompletePage extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.spaceMd),
           Center(
-            child: Text('设置完成！', style: textTheme.displayMedium),
+            child: Text(l.setupCompleteTitle, style: textTheme.displayMedium),
           ),
           const SizedBox(height: AppDimens.spaceLg),
           Text(
-            '今日提醒一览',
+            l.setupRemindersHeading,
             style: textTheme.titleMedium?.copyWith(color: AppColors.slate),
           ),
           const SizedBox(height: AppDimens.spaceSm),
@@ -272,13 +293,13 @@ class SetupCompletePage extends StatelessWidget {
             padding: const EdgeInsets.all(AppDimens.spaceSm),
             child: Column(
               children: [
-                for (var i = 0; i < _reminders.length; i++) ...[
+                for (var i = 0; i < reminders.length; i++) ...[
                   Row(
                     children: [
                       SizedBox(
                         width: 72,
                         child: Text(
-                          _reminders[i].$1,
+                          reminders[i].$1,
                           style: textTheme.titleMedium
                               ?.copyWith(color: AppColors.slate),
                         ),
@@ -286,13 +307,13 @@ class SetupCompletePage extends StatelessWidget {
                       const SizedBox(width: AppDimens.spaceSm),
                       Expanded(
                         child: Text(
-                          _reminders[i].$2,
+                          reminders[i].$2,
                           style: textTheme.bodyLarge,
                         ),
                       ),
                     ],
                   ),
-                  if (i != _reminders.length - 1)
+                  if (i != reminders.length - 1)
                     const Divider(height: AppDimens.spaceMd),
                 ],
               ],

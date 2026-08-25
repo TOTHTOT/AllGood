@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/app_localizations.dart';
 import '../state/app_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_dimens.dart';
@@ -24,40 +25,65 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _index,
-        children: [
-          TodayScreen(state: widget.state),
-          const TrendsScreen(),
-          FamilyScreen(state: widget.state),
-        ],
-      ),
-      bottomNavigationBar: _CupertinoTabBar(
-        index: _index,
-        onChanged: (index) => setState(() => _index = index),
-      ),
+    return ListenableBuilder(
+      listenable: widget.state,
+      builder: (context, _) {
+        return Scaffold(
+          body: IndexedStack(
+            index: _index,
+            children: [
+              TodayScreen(state: widget.state),
+              TrendsScreen(state: widget.state),
+              FamilyScreen(state: widget.state),
+            ],
+          ),
+          bottomNavigationBar: _CupertinoTabBar(
+            index: _index,
+            onChanged: (index) => setState(() => _index = index),
+            labels: const [
+              (CupertinoIcons.calendar_today, _TabKind.today),
+              (CupertinoIcons.chart_bar_fill, _TabKind.trends),
+              (CupertinoIcons.person_2_fill, _TabKind.family),
+            ],
+          ),
+        );
+      },
     );
+  }
+}
+
+enum _TabKind { today, trends, family }
+
+extension on AppLocalizations {
+  String labelFor(_TabKind kind) {
+    switch (kind) {
+      case _TabKind.today:
+        return tabToday;
+      case _TabKind.trends:
+        return tabTrends;
+      case _TabKind.family:
+        return tabFamily;
+    }
   }
 }
 
 /// Cupertino 风格 tab bar：白底、顶部 0.5px hairline 分隔线、
 /// 选中强调色图标 + 文字、未选中灰色，无任何背景指示块。
 class _CupertinoTabBar extends StatelessWidget {
-  const _CupertinoTabBar({required this.index, required this.onChanged});
+  const _CupertinoTabBar({
+    required this.index,
+    required this.onChanged,
+    required this.labels,
+  });
 
   final int index;
   final ValueChanged<int> onChanged;
-
-  static const List<(IconData, String)> _tabs = [
-    (CupertinoIcons.calendar_today, '今天'),
-    (CupertinoIcons.chart_bar_fill, '趋势'),
-    (CupertinoIcons.person_2_fill, '家人'),
-  ];
+  final List<(IconData, _TabKind)> labels;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final loc = AppLocalizations.of(context);
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.bgCard,
@@ -71,7 +97,7 @@ class _CupertinoTabBar extends StatelessWidget {
           height: AppDimens.tabBarHeight,
           child: Row(
             children: [
-              for (var i = 0; i < _tabs.length; i++)
+              for (var i = 0; i < labels.length; i++)
                 Expanded(
                   child: Pressable(
                     onTap: () => onChanged(i),
@@ -79,14 +105,14 @@ class _CupertinoTabBar extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          _tabs[i].$1,
+                          labels[i].$1,
                           size: AppDimens.tabIconSize,
                           color: i == index
                               ? AppColors.accent
                               : AppColors.textSecondary,
                         ),
                         Text(
-                          _tabs[i].$2,
+                          loc.labelFor(labels[i].$2),
                           style: textTheme.bodyMedium?.copyWith(
                             color: i == index
                                 ? AppColors.accent

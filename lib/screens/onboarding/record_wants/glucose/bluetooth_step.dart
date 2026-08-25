@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_dimens.dart';
 import '../../../../widgets/apple_button.dart';
@@ -16,12 +17,13 @@ class BluetoothStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppDimens.spaceLg),
       child: Column(
         children: [
           Pressable(
-            onTap: () => showIosToast(context, '蓝牙连接暂未开放，敬请期待'),
+            onTap: () => showIosToast(context, l.sugarBluetoothUnavailable),
             child: Container(
               width: 189,
               height: 189,
@@ -39,7 +41,7 @@ class BluetoothStep extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      '蓝牙',
+                      l.sugarBluetoothTitle,
                       style: textTheme.headlineMedium?.copyWith(
                         color: AppColors.slate,
                       ),
@@ -51,7 +53,7 @@ class BluetoothStep extends StatelessWidget {
           ),
           const SizedBox(height: AppDimens.spaceSm),
           Text(
-            '请打开血糖仪蓝牙，点击圆环连接',
+            l.sugarBluetoothHint,
             style: textTheme.bodyMedium?.copyWith(color: AppColors.bgCard),
           ),
         ],

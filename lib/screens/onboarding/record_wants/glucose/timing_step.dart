@@ -4,6 +4,7 @@ library;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../state/app_state.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_dimens.dart';
@@ -17,29 +18,43 @@ class GlucoseTimingStep extends StatelessWidget {
   final AppState state;
   final ValueChanged<String> onStep;
 
-  static const List<(String, String, String)> _timings = [
-    ('空腹', '早起没吃饭前', '07:00'),
-    ('早餐后', '吃完早餐 2 小时', '09:00'),
-    ('午餐后', '吃完午餐 2 小时', '14:00'),
-    ('晚餐后', '吃完晚餐 2 小时', '20:00'),
-    ('睡前', '准备睡觉前', '21:30'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
+    final names = [
+      l.sugarTimingNameFasting,
+      l.sugarTimingNameAfterBreakfast,
+      l.sugarTimingNameAfterLunch,
+      l.sugarTimingNameAfterDinner,
+      l.sugarTimingNameBedtime,
+    ];
+    final notes = [
+      l.sugarTimingNoteFasting,
+      l.sugarTimingNoteAfterBreakfast,
+      l.sugarTimingNoteAfterLunch,
+      l.sugarTimingNoteAfterDinner,
+      l.sugarTimingNoteBedtime,
+    ];
+    final times = [
+      l.sugarTimingTime1,
+      l.sugarTimingTime2,
+      l.sugarTimingTime3,
+      l.sugarTimingTime4,
+      l.sugarTimingTime5,
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const StepHeader('测量时段', '您通常什么时候测血糖？多选'),
+        StepHeader(l.sugarTimingTitle, l.sugarTimingHint),
         const SizedBox(height: AppDimens.spaceSm),
-        for (final (name, note, time) in _timings)
+        for (var i = 0; i < names.length; i++)
           _TimingCard(
-            name: name,
-            note: note,
-            time: time,
-            selected: state.glucoseTimings.contains(name),
-            onTap: () => state.toggleGlucoseTiming(name),
+            name: names[i],
+            note: notes[i],
+            time: times[i],
+            selected: state.glucoseTimings.contains(names[i]),
+            onTap: () => state.toggleGlucoseTiming(names[i]),
           ),
         const SizedBox(height: AppDimens.spaceXs),
         Pressable(
@@ -54,7 +69,7 @@ class GlucoseTimingStep extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                '下一步',
+                l.sugarTimingNext,
                 style: textTheme.titleLarge?.copyWith(color: AppColors.slate),
               ),
             ),

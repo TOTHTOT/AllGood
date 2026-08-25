@@ -4,6 +4,7 @@ library;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../../state/app_state.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/app_dimens.dart';
@@ -26,11 +27,12 @@ class _ExerciseCardState extends State<ExerciseCard> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final l = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          '每日步数目标',
+          l.exerciseGoalTitle,
           style: textTheme.titleLarge?.copyWith(color: AppColors.bgCard),
         ),
         const SizedBox(height: AppDimens.spaceSm),
@@ -44,7 +46,7 @@ class _ExerciseCardState extends State<ExerciseCard> {
             ),
             Expanded(
               child: Text(
-                '$_goal 步',
+                l.exerciseGoalSteps(_goal),
                 textAlign: TextAlign.center,
                 style: textTheme.displayMedium?.copyWith(
                   color: AppColors.bgCard,
@@ -61,7 +63,7 @@ class _ExerciseCardState extends State<ExerciseCard> {
         Pressable(
           onTap: () {
             widget.state.stepGoal = _goal;
-            showIosToast(context, '已保存运动目标');
+            showIosToast(context, l.exerciseGoalSaved);
           },
           child: Container(
             constraints: const BoxConstraints(minHeight: AppDimens.touchMin),
@@ -73,7 +75,7 @@ class _ExerciseCardState extends State<ExerciseCard> {
             ),
             child: Center(
               child: Text(
-                '添加',
+                l.exerciseGoalAdd,
                 style: textTheme.titleLarge?.copyWith(color: AppColors.slate),
               ),
             ),

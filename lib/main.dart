@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'l10n/app_localizations.dart';
 import 'screens/onboarding/entry_pages.dart';
 import 'state/app_state.dart';
 import 'theme/app_theme.dart';
@@ -17,11 +18,20 @@ class AllGoodApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'All Good',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      home: InitialPage(state: state),
+    return ListenableBuilder(
+      listenable: state,
+      builder: (_, _) => MaterialApp(
+        title: 'All Good',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light(),
+        locale: state.locale,
+        // Auto-generated delegates / supportedLocales from the ARB files in
+        // lib/l10n/ — to add a new language, drop in `app_<code>.arb` and
+        // append the Locale to AppLocalizations.supportedLocales.
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: InitialPage(state: state),
+      ),
     );
   }
 }

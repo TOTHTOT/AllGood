@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../../../state/app_state.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../../theme/app_dimens.dart';
@@ -19,35 +20,36 @@ class GlucoseTargetStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const StepHeader('血糖目标', '一般不用改，直接下一步就好'),
+        StepHeader(l.sugarTargetTitle, l.sugarTargetHint),
         const SizedBox(height: AppDimens.spaceSm),
         _TargetCard(
-          title: '一般标准',
-          value: '空腹 < 6.1   餐后 < 7.8',
-          note: '适合血糖偏高、未确诊',
+          title: l.sugarTargetStandard,
+          value: l.sugarTargetStandardValue,
+          note: l.sugarTargetStandardNote,
           selected: state.glucoseTarget == GlucoseTarget.standard,
           onTap: () {
             state.setGlucoseTarget(GlucoseTarget.standard);
-            showIosToast(context, '血糖设置完成');
+            showIosToast(context, l.sugarTargetSavedToast);
           },
         ),
         _TargetCard(
-          title: '糖尿病人标准',
-          value: '空腹 < 7.0   餐后 < 10.0',
-          note: '已确诊的常用控制目标',
+          title: l.sugarTargetDiabetic,
+          value: l.sugarTargetDiabeticValue,
+          note: l.sugarTargetDiabeticNote,
           selected: state.glucoseTarget == GlucoseTarget.diabetic,
           onTap: () {
             state.setGlucoseTarget(GlucoseTarget.diabetic);
-            showIosToast(context, '血糖设置完成');
+            showIosToast(context, l.sugarTargetSavedToast);
           },
         ),
         _TargetCard(
-          title: '自定义',
+          title: l.sugarTargetCustom,
           value: null,
-          note: '根据医生建议设置目标范围',
+          note: l.sugarTargetCustomNote,
           selected: state.glucoseTarget == GlucoseTarget.custom,
           onTap: () {
             state.setGlucoseTarget(GlucoseTarget.custom);
