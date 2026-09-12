@@ -366,10 +366,36 @@ class AppLocalizationsZh extends AppLocalizations {
   String get medicationPillsLabel => '一次几粒';
 
   @override
+  String get medicationPerDay => '一日';
+
+  @override
+  String get medicationPerTime => '一次';
+
+  @override
+  String get medicationDosePrefix => '第';
+
+  @override
   String get medicationTimesUnit => '次';
 
   @override
   String get medicationPillsUnit => '粒';
+
+  @override
+  String get medicationConfirmLabel => '确定';
+
+  @override
+  String get medicationMealBefore => '餐前';
+
+  @override
+  String get medicationMealAfter => '餐后';
+
+  @override
+  String get medicationNoteHint => '备注';
+
+  @override
+  String medicationDoseNth(int n) {
+    return '第 $n 次';
+  }
 
   @override
   String get checkInMedicationStatus => '8:00 早餐后 1 次';

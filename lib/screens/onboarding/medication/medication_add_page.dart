@@ -33,6 +33,7 @@ class MedicationAddPage extends StatelessWidget {
     final l = AppLocalizations.of(context);
     return OnboardingScaffold(
       title: l.medicationStatusTitle,
+      titleColor: AppColors.purple,
       bottom: WarmCtaButton(
         label: l.continueButton,
         onTap: () => Navigator.of(context).push(
@@ -53,7 +54,7 @@ class MedicationAddPage extends StatelessWidget {
                 _MedicationCard(med: med),
                 const SizedBox(height: AppDimens.spaceSm),
               ],
-              // 粉底相机卡（45:273：左侧大号玫瑰相机图标 + 右侧米白文字）
+              // 浅紫底相机卡（45:273 换肤：紫色系）
               // 拍照识别暂未实现，点击仅提示，手动添加走下方「+」卡。
               Pressable(
                 onTap: () => showIosToast(
@@ -63,7 +64,7 @@ class MedicationAddPage extends StatelessWidget {
                 child: Container(
                   height: 192,
                   decoration: const BoxDecoration(
-                    color: AppColors.pink,
+                    color: AppColors.purpleSoft,
                     borderRadius: BorderRadius.all(
                       Radius.circular(AppDimens.radiusCard),
                     ),
@@ -76,13 +77,14 @@ class MedicationAddPage extends StatelessWidget {
                       const Icon(
                         CupertinoIcons.camera_fill,
                         size: 88,
-                        color: AppColors.accent,
+                        color: AppColors.lavenderIcon,
                       ),
-                      const SizedBox(width: 410),
+                      const SizedBox(width: AppDimens.spaceLg),
                       Text(
                         l.medicationTapToAdd,
-                        style: textTheme.headlineMedium
-                            ?.copyWith(color: AppColors.bgPage),
+                        style: textTheme.headlineMedium?.copyWith(
+                          color: AppColors.bgPage,
+                        ),
                       ),
                     ],
                   ),
@@ -97,7 +99,7 @@ class MedicationAddPage extends StatelessWidget {
                       const BoxConstraints(minHeight: AppDimens.touchMin),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: AppColors.strokeGray,
+                      color: AppColors.purpleStroke,
                       width: 3,
                     ),
                     borderRadius: const BorderRadius.all(
@@ -108,7 +110,7 @@ class MedicationAddPage extends StatelessWidget {
                     child: Icon(
                       CupertinoIcons.add,
                       size: 48,
-                      color: AppColors.pink,
+                      color: AppColors.purplePale,
                     ),
                   ),
                 ),

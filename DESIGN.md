@@ -57,6 +57,17 @@
 | `inputFill` | `#EBF5FF` | 目标数值输入框底 |
 | `inputStroke` | `#1F6B8A` 30% | 目标数值输入框描边 |
 
+### 用药流程紫色系（Figma 用药帧换肤）
+
+| Token | 值 | 用途 |
+|-------|-----|------|
+| `purple` | `#7D73BE` | 用药流程标题/描边/时间块/餐前餐后按钮 |
+| `purpleSoft` | `#CECBFF` | 用药详情/餐前餐后大卡片底 |
+| `purpleStroke` | `#C2A3CD` | 「+」添加卡、「确定」卡描边 |
+| `purplePale` | `#C5C9E6` | 「+」「确定」浅色文字 |
+| `purpleDeep` | `#402B62` | 深紫小图标（编辑铅笔） |
+| `lavenderIcon` | `#D2D2EA` | 相机图标 |
+
 ### 健康语义色（Apple system colors，唯一的多色例外）
 
 | Token | 值 | 用途 |

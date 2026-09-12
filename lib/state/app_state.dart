@@ -36,11 +36,27 @@ class DayReading {
 
 /// 用药条目（引导流程录入，内存态）。
 class Medication {
-  Medication({required this.name, required this.timesPerDay, required this.pillsEach});
+  Medication({
+    required this.name,
+    required this.timesPerDay,
+    required this.pillsEach,
+    List<String>? doseTimes,
+    this.mealTiming = 'before',
+    this.note = '',
+  }) : doseTimes = doseTimes ?? ['08:00'];
 
   String name;
   int timesPerDay;
   int pillsEach;
+
+  /// 每次服药时间（HH:mm），长度随 [timesPerDay]。
+  List<String> doseTimes;
+
+  /// 餐前/餐后：'before' / 'after'。
+  String mealTiming;
+
+  /// 备注。
+  String note;
 }
 
 /// 血糖测量方式。

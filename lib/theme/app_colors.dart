@@ -39,6 +39,14 @@ abstract final class AppColors {
   ); // 输入框底
   static final Color inputStroke = deepBlue.withValues(alpha: 0.3);
 
+  // 用药流程紫色系（Figma 用药帧换肤）
+  static const Color purple = Color(0xFF7D73BE); // 标题/描边/时间块/餐前餐后按钮
+  static const Color purpleSoft = Color(0xFFCECBFF); // 大卡片底
+  static const Color purpleStroke = Color(0xFFC2A3CD); // 描边（+卡/确定卡）
+  static const Color purplePale = Color(0xFFC5C9E6); // 「+」「确定」浅色字
+  static const Color purpleDeep = Color(0xFF402B62); // 深紫小图标
+  static const Color lavenderIcon = Color(0xFFD2D2EA); // 相机图标
+
   // 健康语义色（唯一的多色例外，沿用 Apple system colors）
   static const Color ok = Color(0xFF34C759);
   static const Color warning = Color(0xFFFF9F0A);

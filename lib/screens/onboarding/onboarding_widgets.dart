@@ -18,12 +18,16 @@ class OnboardingScaffold extends StatelessWidget {
     this.contentPadding,
     this.scroll = true,
     this.safeBottom = true,
+    this.titleColor,
   });
 
   final String? title;
   final String? subtitle;
   final bool showBack;
   final Widget child;
+
+  /// 标题颜色，默认 `AppColors.accent`。
+  final Color? titleColor;
 
   /// 底部固定区（CTA 按钮等）。
   final Widget? bottom;
@@ -81,7 +85,7 @@ class OnboardingScaffold extends StatelessWidget {
                               Text(
                                 title!,
                                 style: textTheme.displayMedium?.copyWith(
-                                  color: AppColors.accent,
+                                  color: titleColor ?? AppColors.accent,
                                 ),
                               ),
                             ],
@@ -130,6 +134,54 @@ class OnboardingBackButton extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: const Icon(CupertinoIcons.arrow_left, color: AppColors.slate),
+      ),
+    );
+  }
+}
+
+/// 用药流程顶栏返回钮（Figma 206:131 左上）：白底圆 + 浅紫描边 + 紫箭头。
+class PurpleBackButton extends StatelessWidget {
+  const PurpleBackButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Pressable(
+      onTap: () => Navigator.of(context).maybePop(),
+      child: Container(
+        width: AppDimens.touchMin,
+        height: AppDimens.touchMin,
+        decoration: BoxDecoration(
+          color: AppColors.bgCard,
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.purpleSoft, width: 3),
+        ),
+        child: const Icon(CupertinoIcons.arrow_left, color: AppColors.purple),
+      ),
+    );
+  }
+}
+
+/// 用药流程顶栏（Figma 206:131 / 207:190）：左返回圆钮 + 右侧紫色斜体大标题。
+class PurpleTopBar extends StatelessWidget {
+  const PurpleTopBar({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppDimens.pagePadding),
+      child: Row(
+        children: [
+          const PurpleBackButton(),
+          const Spacer(),
+          Text(
+            title,
+            style: Theme.of(
+              context,
+            ).textTheme.displayMedium?.copyWith(color: AppColors.purple),
+          ),
+        ],
       ),
     );
   }

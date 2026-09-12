@@ -3,4 +3,5 @@ library;
 
 export 'medication/medication_add_page.dart';
 export 'medication/medication_detail_page.dart';
+export 'medication/medication_meal_page.dart';
 export 'medication/medication_status_page.dart';

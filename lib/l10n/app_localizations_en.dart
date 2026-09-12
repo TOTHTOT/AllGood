@@ -371,10 +371,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get medicationPillsLabel => 'Pills each time';
 
   @override
+  String get medicationPerDay => 'Daily';
+
+  @override
+  String get medicationPerTime => 'Each time';
+
+  @override
+  String get medicationDosePrefix => 'Dose';
+
+  @override
   String get medicationTimesUnit => 'x';
 
   @override
   String get medicationPillsUnit => 'pills';
+
+  @override
+  String get medicationConfirmLabel => 'OK';
+
+  @override
+  String get medicationMealBefore => 'Before meals';
+
+  @override
+  String get medicationMealAfter => 'After meals';
+
+  @override
+  String get medicationNoteHint => 'Notes';
+
+  @override
+  String medicationDoseNth(int n) {
+    return 'Dose $n';
+  }
 
   @override
   String get checkInMedicationStatus => '8:00, 1 dose after breakfast';

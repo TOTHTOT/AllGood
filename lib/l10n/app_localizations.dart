@@ -776,6 +776,24 @@ abstract class AppLocalizations {
   /// **'Pills each time'**
   String get medicationPillsLabel;
 
+  /// No description provided for @medicationPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get medicationPerDay;
+
+  /// No description provided for @medicationPerTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Each time'**
+  String get medicationPerTime;
+
+  /// No description provided for @medicationDosePrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose'**
+  String get medicationDosePrefix;
+
   /// No description provided for @medicationTimesUnit.
   ///
   /// In en, this message translates to:
@@ -787,6 +805,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'pills'**
   String get medicationPillsUnit;
+
+  /// No description provided for @medicationConfirmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get medicationConfirmLabel;
+
+  /// No description provided for @medicationMealBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Before meals'**
+  String get medicationMealBefore;
+
+  /// No description provided for @medicationMealAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'After meals'**
+  String get medicationMealAfter;
+
+  /// No description provided for @medicationNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get medicationNoteHint;
+
+  /// No description provided for @medicationDoseNth.
+  ///
+  /// In en, this message translates to:
+  /// **'Dose {n}'**
+  String medicationDoseNth(int n);
 
   /// No description provided for @checkInMedicationStatus.
   ///

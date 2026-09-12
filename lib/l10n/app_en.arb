@@ -178,8 +178,19 @@
   "medicationNameHint": "Tap to enter name",
   "medicationTimesLabel": "Times per day",
   "medicationPillsLabel": "Pills each time",
+  "medicationPerDay": "Daily",
+  "medicationPerTime": "Each time",
+  "medicationDosePrefix": "Dose",
   "medicationTimesUnit": "x",
   "medicationPillsUnit": "pills",
+  "medicationConfirmLabel": "OK",
+  "medicationMealBefore": "Before meals",
+  "medicationMealAfter": "After meals",
+  "medicationNoteHint": "Notes",
+  "medicationDoseNth": "Dose {n}",
+  "@medicationDoseNth": {
+    "placeholders": { "n": { "type": "int" } }
+  },
 
   "checkInMedicationStatus": "8:00, 1 dose after breakfast",
   "checkInMedicationSummary": "Took 1 after breakfast, on time",
