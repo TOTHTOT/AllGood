@@ -1,4 +1,13 @@
+/*
+ * @Author: TOTHTOT 37585883+TOTHTOT@users.noreply.github.com
+ * @Date: 2026-08-25 19:59:38
+ * @LastEditors: TOTHTOT 37585883+TOTHTOT@users.noreply.github.com
+ * @LastEditTime: 2026-08-25 22:07:31
+ * @FilePath: \AllGood\lib\main.dart
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import 'package:flutter/material.dart';
+import 'package:flutter/widget_previews.dart';
 
 import 'l10n/app_localizations.dart';
 import 'screens/onboarding/entry_pages.dart';
@@ -25,13 +34,23 @@ class AllGoodApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light(),
         locale: state.locale,
-        // Auto-generated delegates / supportedLocales from the ARB files in
-        // lib/l10n/ — to add a new language, drop in `app_<code>.arb` and
-        // append the Locale to AppLocalizations.supportedLocales.
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: InitialPage(state: state),
       ),
     );
   }
+}
+
+
+/// Widget Preview
+@Preview(
+  name: 'All Good',
+  group: 'App',
+  size: Size(390, 844),
+)
+Widget allGoodPreview() {
+  return AllGoodApp(
+    state: AppState(),
+  );
 }

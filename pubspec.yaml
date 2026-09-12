@@ -64,6 +64,22 @@ flutter:
   # Auto-generate AppLocalizations from lib/l10n/app_*.arb on build.
   generate: true
 
+  # San Francisco Compact — used for the English UI. CJK characters fall
+  # back to the platform's bundled Chinese font automatically.
+  fonts:
+    - family: SFCompact
+      fonts:
+        - asset: assets/fonts/San-Francisco-Compact/sf-compact-text-light-4.otf
+          weight: 300
+        - asset: assets/fonts/San-Francisco-Compact/sf-compact-regular-2.otf
+          weight: 400
+        - asset: assets/fonts/San-Francisco-Compact/sf-compact-text-medium-7.otf
+          weight: 500
+        - asset: assets/fonts/San-Francisco-Compact/sf-compact-text-semibold-8.otf
+          weight: 600
+        - asset: assets/fonts/San-Francisco-Compact/sf-compact-text-bold-3.otf
+          weight: 700
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

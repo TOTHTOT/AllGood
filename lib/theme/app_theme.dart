@@ -29,6 +29,7 @@ abstract final class AppTheme {
 
     const textTheme = TextTheme(
       displayLarge: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 48,
         fontWeight: FontWeight.w600,
         height: 1.1,
@@ -36,48 +37,56 @@ abstract final class AppTheme {
         color: AppColors.textPrimary,
       ),
       displayMedium: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 34,
         fontWeight: FontWeight.w600,
         height: 1.2,
         color: AppColors.textPrimary,
       ),
       headlineMedium: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 28,
         fontWeight: FontWeight.w600,
         height: 1.25,
         color: AppColors.textPrimary,
       ),
       titleLarge: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 22,
         fontWeight: FontWeight.w600,
         height: 1.3,
         color: AppColors.textPrimary,
       ),
       titleMedium: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 20,
         fontWeight: FontWeight.w600,
         height: 1.45,
         color: AppColors.textPrimary,
       ),
       bodyLarge: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 20,
         fontWeight: FontWeight.w400,
         height: 1.45,
         color: AppColors.textPrimary,
       ),
       bodyMedium: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 17,
         fontWeight: FontWeight.w400,
         height: 1.4,
         color: AppColors.textSecondary,
       ),
       bodySmall: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 17,
         fontWeight: FontWeight.w400,
         height: 1.3,
         color: AppColors.textSecondary,
       ),
       labelLarge: TextStyle(
+        fontFamily: 'SFCompact',
         fontSize: 22,
         fontWeight: FontWeight.w600,
         height: 1.3,
